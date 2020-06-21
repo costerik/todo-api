@@ -1,14 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import Koa from 'koa';
-import Router from 'koa-router';
 import Logger from 'koa-logger';
 import Json from 'koa-json';
 import BodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 
 const app = new Koa();
-const router = new Router();
 
 mongoose.connect(process.env.DATABASE_URL || '', {
   useNewUrlParser: true,
@@ -18,18 +16,21 @@ mongoose.connect(process.env.DATABASE_URL || '', {
 mongoose.connection.on('connected', () => {
   console.log('Mongoose is connected...');
 });
+
 mongoose.connection.on('error', (err) => {
   console.error('error', err);
 });
 
+/* models */
+import './models/user.model';
+
 /* routes */
-router.get('/', async (ctx, next) => {
-  ctx.body = { msg: 'Hello world...' };
-  await next();
-});
+import usersRoutes from './routes/users.routes';
+import tasksRoutes from './routes/tasks.routes';
 
 /* middlewares */
-app.use(router.routes()).use(router.allowedMethods());
+app.use(usersRoutes.routes()).use(usersRoutes.allowedMethods());
+app.use(tasksRoutes.routes()).use(tasksRoutes.allowedMethods());
 app.use(BodyParser());
 app.use(Json());
 app.use(Logger());
