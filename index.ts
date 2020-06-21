@@ -5,6 +5,7 @@ import Logger from 'koa-logger';
 import Json from 'koa-json';
 import BodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
+import cors from '@koa/cors';
 
 const app = new Koa();
 
@@ -29,10 +30,11 @@ import usersRoutes from './routes/users.routes';
 import tasksRoutes from './routes/tasks.routes';
 
 /* middlewares */
-app.use(usersRoutes.routes()).use(usersRoutes.allowedMethods());
-app.use(tasksRoutes.routes()).use(tasksRoutes.allowedMethods());
+app.use(cors());
 app.use(BodyParser());
 app.use(Json());
 app.use(Logger());
+app.use(usersRoutes.routes()).use(usersRoutes.allowedMethods());
+app.use(tasksRoutes.routes()).use(tasksRoutes.allowedMethods());
 
 app.listen(3000, () => console.log('Koa server started...'));
