@@ -7,7 +7,7 @@ export type TaskType = {
   title: string;
   description: string;
   state: StateType;
-  user: UserType;
+  user: UserType | null;
 } & mongoose.Document;
 
 const taskSchema = new mongoose.Schema(

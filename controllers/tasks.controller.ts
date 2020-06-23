@@ -49,7 +49,7 @@ export async function taskCreate(ctx: Router.RouterContext, next: () => any): Pr
       .execPopulate();
     const createdTask = await task.save();
     ctx.response.status = 201;
-    ctx.response.body = { createdTask };
+    ctx.response.body = { task: createdTask };
   } catch (e) {
     ctx.response.status = 400;
     ctx.response.body = { error: e.message };
@@ -81,6 +81,39 @@ export async function taskUpdate(ctx: Router.RouterContext, next: () => any): Pr
     });
     ctx.response.status = 200;
     ctx.response.body = { task };
+  } catch (e) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: e.message };
+  } finally {
+    await next();
+  }
+}
+
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export async function removeUser(ctx: Router.RouterContext, next: () => any): Promise<void> {
+  try {
+    const task = await Task.findOneAndUpdate(
+      { _id: ctx.params.id },
+      { user: null },
+      {
+        runValidators: true,
+      }
+    );
+    if (task) {
+      const user = await User.findById(task.user?._id);
+      if (user) {
+        user.tasks = user.tasks.filter((t) => t._id.toString() !== task._id.toString());
+        await user.save();
+        ctx.response.status = 200;
+        ctx.response.body = { task };
+      } else {
+        ctx.response.status = 400;
+        ctx.response.body = { error: 'The user previously assigned to the task is no longer the owner' };
+      }
+    } else {
+      ctx.response.status = 400;
+      ctx.response.body = { error: 'The task does not exist' };
+    }
   } catch (e) {
     ctx.response.status = 400;
     ctx.response.body = { error: e.message };

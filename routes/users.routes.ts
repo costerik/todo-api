@@ -9,6 +9,6 @@ routes.get('/', userAll);
 routes.get('/:id', userGet);
 routes.post('/', userCreate);
 routes.patch('/:id', userUpdate);
-routes.patch('/:id/tasks', addTask);
+routes.patch('/:id/task', addTask);
 
 export default routes;
