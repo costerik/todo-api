@@ -5,27 +5,27 @@ The endpoints are
 
 ## States
 ```
-GET		/states
-POST	/states
+GET    /states
+POST   /states
 ```
 
 ## Tasks
 ```
 TASKS
-GET		/tasks
-GET		/tasks/:id
-POST	/tasks
-PATCH	/tasks/:id
-PATCH	/tasks/:id/user
+GET    /tasks
+GET    /tasks/:id
+POST   /tasks
+PATCH  /tasks/:id
+PATCH  /tasks/:id/user
 ```
 
 ## Users
 ```
-GET		/users
-GET		/users/:id
-POST	/users
-PATCH	/users/:id
-PATCH	/users/:id/task
+GET    /users
+GET    /users/:id
+POST   /users
+PATCH  /users/:id
+PATCH  /users/:id/task
 ```
 
 ## Setup
