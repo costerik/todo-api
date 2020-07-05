@@ -41,4 +41,6 @@ app.use(usersRoutes.routes()).use(usersRoutes.allowedMethods());
 app.use(tasksRoutes.routes()).use(tasksRoutes.allowedMethods());
 app.use(statesRoutes.routes()).use(statesRoutes.allowedMethods());
 
-app.listen(process.env.PORT || 3000, () => console.log('Koa server started...'));
+app.listen(process.env.PORT || 3000, () =>
+  console.log(`Koa server started on port ${process.env.PORT || 3000}...`)
+);
