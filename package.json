@@ -8,7 +8,8 @@
     "lint": "eslint --ext .ts .",
     "ts": "tsc",
     "dev": "ts-node-dev --respawn index.ts",
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "postinstall": "yarn run ts"
   },
   "keywords": [],
   "author": "",
