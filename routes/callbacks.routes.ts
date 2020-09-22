@@ -76,10 +76,10 @@ routes.post(
         code = `&code=${ctx.request.body.code}`;
       }
       if (ctx.request.body.state) {
-        state = `state=${ctx.request.body.state}`;
+        state = `&state=${ctx.request.body.state}`;
       }
       if (ctx.request.body.id_token) {
-        idToken = `id_token=${ctx.request.body.id_token}`;
+        idToken = `&id_token=${ctx.request.body.id_token}`;
       }
       const clientSecret = `&client_secret=${token}`;
       returnURL = `?success=true${code}${state}${idToken}${clientSecret}${firstName}${middleName}${lastName}${email}`;
