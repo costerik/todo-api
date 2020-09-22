@@ -75,5 +75,22 @@ routes.post(
     }
   }
 );
+routes.get(
+  '/redirect',
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  async (ctx: Router.RouterContext, next: () => any): Promise<void> => {
+    try {
+      console.log('GET', ctx.params);
+      ctx.response.status = 200;
+      ctx.response.body = { params: ctx.params };
+    } catch (e) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: e.message };
+      ctx.response.redirect('?success=false');
+    } finally {
+      await next();
+    }
+  }
+);
 
 export default routes;
