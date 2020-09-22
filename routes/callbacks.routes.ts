@@ -49,25 +49,27 @@ routes.post(
       let middleName = '';
       let lastName = '';
       let email = '';
-      if (ctx.response.status === 200) {
-        if (ctx.request.body.hasOwnProperty('user')) {
-          const userData = ctx.request.body.user;
-          const user = JSON.parse(userData);
-          firstName = `&first_name=${user.name['firstName']}`;
-          middleName = `&middle_name=${user.name['middleName']}`;
-          lastName = `&last_name=${user.name['lastName']}`;
-          email = `&email=${user.email}`;
-        }
-        const code = `&code=${ctx.request.body.code}`;
-        const clientSecret = `&client_secret=${token}`;
-        returnURL = `?success=true${code}${clientSecret}${firstName}${middleName}${lastName}${email}`;
-        ctx.response.redirect(returnURL);
-      } else {
-        ctx.response.redirect('?success=false');
+      let code = '';
+      if (ctx.request.body.hasOwnProperty('user')) {
+        const userData = ctx.request.body.user;
+        const user = JSON.parse(userData);
+        firstName = `&first_name=${user.name['firstName']}`;
+        middleName = `&middle_name=${user.name['middleName']}`;
+        lastName = `&last_name=${user.name['lastName']}`;
+        email = `&email=${user.email}`;
       }
+      if (ctx.request.body.code) {
+        code = `&code=${ctx.request.body.code}`;
+      }
+      const clientSecret = `&client_secret=${token}`;
+      returnURL = `?success=true${code}${clientSecret}${firstName}${middleName}${lastName}${email}`;
+      ctx.response.body = { data: ctx.request.body };
+      ctx.response.redirect(returnURL);
+      console.log('FINAL RESPONSE', ctx.response);
     } catch (e) {
       ctx.response.status = 400;
       ctx.response.body = { error: e.message };
+      ctx.response.redirect('?success=false');
     } finally {
       await next();
     }
